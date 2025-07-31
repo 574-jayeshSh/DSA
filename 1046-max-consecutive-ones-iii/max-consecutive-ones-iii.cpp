@@ -16,9 +16,11 @@ public:
                 }
                 l++;
             }
+            if(cnt <= k ) {
+                int len = r - l + 1;
+                maxLen = max(maxLen,len);
+            }
             
-            int len = r - l + 1;
-            maxLen = max(maxLen,len);
 
             r++;
         }
