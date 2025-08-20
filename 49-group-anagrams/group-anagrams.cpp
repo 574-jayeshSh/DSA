@@ -5,13 +5,8 @@ public:
         for(const auto& s : strs){
             string st = s;
             sort(st.begin(),st.end());
-            string key = "";
-            for(int i = 0; i<st.size() ;i++){
-                if(i == st.size()-1) key += st[i];
-                key += st[i];
-                key += ",";
-            }
-            ans[key].push_back(s);
+            
+            ans[st].push_back(s);
        }
        vector<vector<string>> res;
        for(auto it : ans){
