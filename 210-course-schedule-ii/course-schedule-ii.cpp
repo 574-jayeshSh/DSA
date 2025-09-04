@@ -3,34 +3,36 @@ using namespace std;
 
 class Solution {
 public:
-
     vector<int> findOrder(int numCourses, vector<vector<int>>& edges) {
         vector<vector<int>> adj(numCourses);
-        vector<int> indegree(numCourses, 0);
+        vector<int> indegree(numCourses);
 
+        // Build adjacency list & indegree
         for (auto &p : edges) {
             adj[p[1]].push_back(p[0]);
             indegree[p[0]]++;
         }
 
+        // Start with courses having no prerequisites
         queue<int> q;
         for (int i = 0; i < numCourses; i++) {
             if (indegree[i] == 0) q.push(i);
         }
 
-        vector<int> ans; // number of courses we can complete
+        vector<int> ans;
+        ans.reserve(numCourses);  // optimization: avoid reallocations
+
         while (!q.empty()) {
-            int node = q.front(); q.pop();
+            int node = q.front();
+            q.pop();
             ans.push_back(node);
 
             for (int neighbor : adj[node]) {
-                indegree[neighbor]--;
-                if (indegree[neighbor] == 0)
+                if (--indegree[neighbor] == 0)  // combine update + check
                     q.push(neighbor);
             }
         }
-        
-        if(ans.size() == numCourses) return ans;
-        else return {};
+
+        return (ans.size() == numCourses) ? ans : vector<int>{};
     }
 };
