@@ -1,37 +1,31 @@
 class Solution {
 public:
-    bool isCycle(int node, vector<bool> &visited, vector<bool> &dfs, vector<vector<int>> &adj) {
-        visited[node] = true;
-        dfs[node] = true;
-
-        for (int neighbor : adj[node]) {
-            if (!visited[neighbor]) {
-                if (isCycle(neighbor, visited, dfs, adj))
-                    return true;
-            }
-            else if (dfs[neighbor]) {
-                return true; // back edge found
-            }
-        }
-
-        dfs[node] = false; // backtrack
-        return false;
-    }
-
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<vector<int>> adj(numCourses);
+        vector<int> indegree(numCourses, 0);
+
         for (auto &p : prerequisites) {
             adj[p[1]].push_back(p[0]);
+            indegree[p[0]]++;
         }
 
-        vector<bool> visited(numCourses, false);
-        vector<bool> dfs(numCourses, false);
-
+        queue<int> q;
         for (int i = 0; i < numCourses; i++) {
-            if (!visited[i] && isCycle(i, visited, dfs, adj))
-                return false;
+            if (indegree[i] == 0) q.push(i);
         }
 
-        return true;
+        int count = 0; // number of courses we can complete
+        while (!q.empty()) {
+            int node = q.front(); q.pop();
+            count++;
+
+            for (int neighbor : adj[node]) {
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0)
+                    q.push(neighbor);
+            }
+        }
+
+        return count == numCourses; // if all courses can be completed
     }
 };
