@@ -2,34 +2,38 @@ class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n = graph.size();
-        vector<int> outdegree(n, 0);
-        vector<vector<int>> revGraph(n);
-        set<int> ans;
-        queue<int> q;
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n,0);
+        vector<int> ans;
 
-        for (int i = 0; i < n; i++) {
-            outdegree[i] = graph[i].size();
-            for (int v : graph[i]) {
-                revGraph[v].push_back(i);
-            }
-            if (outdegree[i] == 0) {
-                ans.insert(i);
-                q.push(i);
+        //reversing the list and calculating indegree
+        for(int i=0; i<n; i++){
+            for(auto it: graph[i]){
+                adj[it].push_back(i);
+                indegree[i]++;
             }
         }
 
-        while (!q.empty()) {
+        queue<int> q;
+        for(int i=0; i<n; i++){
+            if(indegree[i]==0)
+            q.push(i);
+        }
+
+        while(!q.empty()){
             int node = q.front();
+            ans.push_back(node);
             q.pop();
 
-            for (int v : revGraph[node]) {
-                if (--outdegree[v] == 0) {
-                    ans.insert(v);
-                    q.push(v);
-                }
+            for(auto it: adj[node]){
+                indegree[it]--;
+                if(indegree[it]==0)
+                q.push(it);
             }
         }
 
-        return vector<int>(ans.begin(), ans.end());
+        sort(ans.begin(),ans.end());
+        return ans;
+
     }
 };
