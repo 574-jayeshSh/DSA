@@ -26,32 +26,25 @@ public:
         while(!q.empty()){
             auto [time,node] = q.top();
             q.pop();
-
             if (visited[node-1]) continue;
             visited[node-1] = true;
-            
             for(auto it : adj[node]){
                 int next = it.first;
                 int timeToReach = it.second;
-                if(timeToReach + time < timeArr[next-1]){
-                    timeArr[next-1] = timeToReach + time;
-                    q.push({timeArr[next - 1] , next});
+                if(it.second + time < timeArr[it.first-1]){
+                    timeArr[it.first-1] = it.second + time;
+                    q.push({timeArr[it.first - 1] , it.first});
                 }
             }
         }
-
         int tym = INT_MIN;
-        for(int i = 0; i<n; i++){
-            if(visited[i]){
+        for(int i=0; i<n; i++){
+            if(visited[i])
                 tym = max(tym,timeArr[i]);
-            }
         }
-
-        
-        for(int i = 0; i<n; i++){
-            if(!visited[i]){
+        for(int i=0; i<n; i++){
+            if(!visited[i])
                 return -1;
-            }
         }
         return tym;
     }
