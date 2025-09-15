@@ -18,11 +18,6 @@ public:
     
     int makeConnected(int n, vector<vector<int>>& connections) {
         if(connections.size() < n-1) return -1;
-
-        sort(connections.begin(), connections.end(),
-            [](vector<int>& a, vector<int>& b) {
-                return a[0] < b[0];
-            });
         vector<int> parent(n), rank(n);
         for(int i = 0; i<n; i++){
             parent[i] = i;
