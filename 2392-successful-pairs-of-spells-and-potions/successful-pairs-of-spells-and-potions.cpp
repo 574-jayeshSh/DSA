@@ -8,9 +8,8 @@ public:
         for(int i = 0; i<n; i++){
             int low = 0, high = m-1;
             while(low <= high){
-                int mid = (low + high) / 2;
-                long long int potionNeed = 1LL*spells[i] * potions[mid];
-                if(potionNeed >= success) {
+                int mid = (low + high) / 2;     
+                if(1LL*spells[i] * potions[mid] >= success) {
                     high = mid - 1;
                 }
                 else low = mid + 1;
