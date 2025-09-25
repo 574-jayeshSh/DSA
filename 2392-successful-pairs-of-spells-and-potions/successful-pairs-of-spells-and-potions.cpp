@@ -1,20 +1,17 @@
 class Solution {
 public:
     vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
-        int n = spells.size();
-        int m = potions.size();
-        vector<int> ans(n , 0);
         sort(potions.begin(), potions.end());
-        for(int i = 0; i<n; i++){
-            int low = 0, high = m-1;
-            while(low <= high){
-                int mid = (low + high) / 2;     
-                if(1LL*spells[i] * potions[mid] >= success) {
-                    high = mid - 1;
-                }
-                else low = mid + 1;
-            }
-            ans[i] = m - low;
+        int m = potions.size();
+        vector<int> ans;
+
+        for (int spell : spells) {
+            // Calculate the minimum potion needed
+            long long required = (success + spell - 1) / spell;  // ceil(success / spell)
+            // Use lower_bound to find first potion >= required
+            auto it = lower_bound(potions.begin(), potions.end(), required);
+            int count = potions.end() - it;
+            ans.push_back(count);
         }
         return ans;
     }
