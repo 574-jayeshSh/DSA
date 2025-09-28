@@ -11,7 +11,7 @@ public:
         return t;
     }
     int minSpeedOnTime(vector<int>& dist, double hour) {
-        int right = 1e7;
+        int right = 1000000000;
         int left = 1;
         int answer = 0;
         while(left <= right){
