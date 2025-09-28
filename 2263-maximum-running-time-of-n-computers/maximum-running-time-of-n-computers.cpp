@@ -9,25 +9,22 @@ public:
         return false;
     }
     long long maxRunTime(int n, vector<int>& batteries) {
-        long long left = *min_element(batteries.begin(), batteries.end());
+         long long left = 0;
         long long sum = 0;
-        for(int i = 0; i<batteries.size(); i++){
-            sum += batteries[i];
-        }
-        long long right = sum/n;
+        for(int b : batteries) sum += b;
+        long long right = sum / n;
         long long answer = 0;
-        while(left <= right){
-            long long mid = (left+right) / 2;
 
-            long long timeTakenBYComputer = n*mid;
-            if(check(mid , batteries, n)){
+        while(left <= right) {
+            long long mid = left + (right - left) / 2;
+            if(check(mid, batteries, n)) {
                 answer = mid;
                 left = mid + 1;
-            }
-            else{
+            } else {
                 right = mid - 1;
             }
         }
+
         return answer;
 
     }
